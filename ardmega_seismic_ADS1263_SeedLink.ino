@@ -58,26 +58,30 @@ void setup() {
 void loop() {
   EthernetClient client = server.available();
   
-  if (client) {
-    while (client.connected()) {
-      // Precision interval check
-      if (micros() >= nextSampleMicros) {
-        nextSampleMicros += sampleInterval; 
+  unsigned long currentMicros = micros();
 
-        // Rapidly poll the 3 channels
-        int32_t valZ = adc.readADC1(ADS126X_AIN2, ADS126X_AIN3); 
-        int32_t valN = adc.readADC1(ADS126X_AIN4, ADS126X_AIN5); 
-        int32_t valE = adc.readADC1(ADS126X_AIN6, ADS126X_AIN7); 
+  // 100Hz Timer (10,000 microseconds)
+  if (currentMicros - nextSampleMicros >= 10000) {
+    nextSampleMicros += 10000;
 
-        int32_t finalZ = valZ - offsetZ;
-        int32_t finalN = valN - offsetN;
-        int32_t finalE = valE - offsetE;
+    // 1. Read Raw 32-bit values from ADS1263
+    // Note: Adjust channel numbers (2,3,4) to your actual wiring
+    int32_t rawZ = adc.readADC1(ADS126X_AIN2, ADS126X_AIN3); 
+    int32_t rawN = adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
+    int32_t rawE = adc.readADC1(ADS126X_AIN6, ADS126X_AIN7);
 
-        // Transmit. Note: CSV is simple, but binary is faster if Proxmox lags.
-        client.print(finalZ); client.print(",");
-        client.print(finalN); client.print(",");
-        client.println(finalE);
-      }
+    // 2. Apply the True Zero Offsets (from our calibration)
+    int32_t finalZ = rawZ - offsetZ;
+    int32_t finalN = rawN - offsetN;
+    int32_t finalE = rawE - offsetE;
+
+    // 3. Send to SeedLink via TCP
+    if (client.connected()) {
+      // Option A: Raw Binary (Most efficient for 32-bit)
+      // We send 12 bytes total (4 per axis)
+      client.write((uint8_t*)&finalZ, 4);
+      client.write((uint8_t*)&finalN, 4);
+      client.write((uint8_t*)&finalE, 4);
     }
   }
 }
