@@ -47,7 +47,7 @@ void setup() {
   adc.setReference(ADS126X_REF_NEG_AIN1, ADS126X_REF_POS_AIN0);
   
   adc.setRate(ADS126X_RATE_1200); 
-  adc.setGain(ADS126X_GAIN_1); 
+  adc.setGain(ADS126X_GAIN_32); 
 
   Serial.println("FARM Station | HHZ 100Hz | External AD580KH Ref Enabled");
   nextSampleMicros = micros();
