@@ -114,7 +114,6 @@ void loop() {
     nextSampleMicros += 10000;
 
     // 1. Read Raw 32-bit values from ADS1263
-    // Note: Adjust channel numbers (2,3,4) to your actual wiring
     int32_t rawZ = adc.readADC1(ADS126X_AIN2, ADS126X_AIN3); 
     int32_t rawN = adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
     int32_t rawE = adc.readADC1(ADS126X_AIN6, ADS126X_AIN7);
