@@ -49,6 +49,14 @@ void setup() {
   adc.setRate(ADS126X_RATE_1200); 
   adc.setGain(ADS126X_GAIN_32); 
 
+  // 1. Update the local library mirror for the FILTER register (0x03)
+  // 0x05 = Sinc4 + 60Hz Rejection
+  adc.REGISTER_ARRAY[0x03] = 0x05; 
+
+  // 2. Push the change from the Mega to the ADS1263
+  // This writes 1 register starting at address 0x03
+  adc.writeRegisters(0x03, 1);
+
   Serial.println("FARM Station | HHZ 100Hz | External AD580KH Ref Enabled");
   nextSampleMicros = micros();
 
