@@ -83,8 +83,7 @@ void setup() {
   adc.begin(ADC_CS);
   
   // The library wants (Negative Ref, Positive Ref)
-  // Negative Reference on AIN1, Positive Reference on AIN0
-  adc.setReference(ADS126X_REF_NEG_AIN1, ADS126X_REF_POS_AIN0);
+  adc.setReference(ADS126X_REF_NEG_INT, ADS126X_REF_POS_INT);
   
   adc.setRate(ADS126X_RATE_1200); 
   adc.setGain(ADS126X_GAIN_32); 
