@@ -29,9 +29,9 @@ void calibrateOffsets() {
   const int samples = 100;
   digitalWrite(ledRpins[LED_CAL], HIGH); // Red ON for Calibration
   for(int i = 0; i < samples; i++) {
-    sumZ += adc.readADC1(ADS126X_AIN2, ADS126X_AIN3);
-    sumN += adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
-    sumE += adc.readADC1(ADS126X_AIN6, ADS126X_AIN7);
+    sumZ += adc.readADC1(ADS126X_AIN0, ADS126X_AIN1);
+    sumN += adc.readADC1(ADS126X_AIN2, ADS126X_AIN3);
+    sumE += adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
     delay(10);
   }
   
@@ -113,9 +113,9 @@ void loop() {
     nextSampleMicros += 10000;
 
     // 1. Read Raw 32-bit values from ADS1263
-    int32_t rawZ = adc.readADC1(ADS126X_AIN2, ADS126X_AIN3); 
-    int32_t rawN = adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
-    int32_t rawE = adc.readADC1(ADS126X_AIN6, ADS126X_AIN7);
+    int32_t rawZ = adc.readADC1(ADS126X_AIN0, ADS126X_AIN1); 
+    int32_t rawN = adc.readADC1(ADS126X_AIN2, ADS126X_AIN3);
+    int32_t rawE = adc.readADC1(ADS126X_AIN4, ADS126X_AIN5);
 
     // 2. Apply the True Zero Offsets (from our calibration)
     int32_t finalZ = rawZ - offsetZ;
