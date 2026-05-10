@@ -24,7 +24,7 @@ const unsigned long sampleInterval = 10000; // 10ms in microseconds
 int32_t offsetZ = 0, offsetN = 0, offsetE = 0;
 
 void calibrateOffsets() {
-  Serial.println("Calibrating True Zero (Keep Station Still)...");
+  //Serial.println("Calibrating True Zero (Keep Station Still)...");
   int32_t sumZ = 0, sumN = 0, sumE = 0;
   const int samples = 100;
   digitalWrite(ledRpins[LED_CAL], HIGH); // Red ON for Calibration
@@ -57,7 +57,7 @@ void setup() {
     digitalWrite(ledGpins[i], LOW);
     digitalWrite(ledRpins[i], LOW);
   }
-  Serial.begin(115200);
+  //Serial.begin(115200);
   pinMode(ADC_DRDY, INPUT);
 
   Ethernet.init(W5500_CS); 
@@ -99,7 +99,7 @@ void setup() {
 
   calibrateOffsets();
 
-  Serial.println("FARM Station | HHZ 100Hz | External AD580KH Ref Enabled");
+  //Serial.println("FARM Station | HHZ 100Hz | External AD580KH Ref Enabled");
   nextSampleMicros = micros();
 }
 
